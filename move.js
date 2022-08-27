@@ -8,7 +8,7 @@ function move(element) {
         element.style.bottom = bottom + 'px'
     }
 
-    function moveWithArrowKeys(left, bottom){
+    function moveWithArrowKeys(left, bottom, callback){
         let direction = null;
         let x = left;
         let y = bottom;
@@ -53,11 +53,12 @@ function move(element) {
             if(e.key === 'ArrowDown'){
                 direction = 'south'
             }
-        
+            callback(direction)
         })
         
         document.addEventListener('keyup', function(e){
             direction = null
+            callback(direction)
         })
     }
     return {
@@ -67,5 +68,23 @@ function move(element) {
 }
 
 const character = newImage('assets/green-character/static.gif')
-move(character).withArrowKeys(100, 250)
+
+function handleDirectionChange(direction){
+    if(direction === null){
+        character.src = 'assets/green-character/static.gif'
+    }
+    if(direction === 'west'){
+        character.src = 'assets/green-character/west.gif'
+    }
+    if(direction === 'north'){
+        character.src = 'assets/green-character/north.gif'
+    }
+    if(direction === 'east'){
+        character.src = 'assets/green-character/east.gif'
+    }
+    if(direction === 'south'){
+        character.src = 'assets/green-character/south.gif'
+    }
+}
+move(character).withArrowKeys(100, 250, handleDirectionChange)
 
